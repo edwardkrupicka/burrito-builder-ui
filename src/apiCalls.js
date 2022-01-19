@@ -16,9 +16,30 @@ const getOrders = async ( api, setOrders, setError ) => {
 	} 
 	catch( error ) {
 		console.log('Error fetching:', error)
-    // setError(error)
     return error
 	}
 }
 
-export {getOrders}
+const postOrder = async (order) => {
+  const config = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(order)
+  };
+  try {
+  const fetchResponse = await fetch('http://localhost:3001/api/v1/orders', config)
+  if(fetchResponse.status !== 201){
+    throw(fetchResponse)
+  }
+  return fetchResponse
+  } 
+  catch (err) {
+    console.log(err)
+    return err
+  }
+}
+
+export {getOrders, postOrder}
