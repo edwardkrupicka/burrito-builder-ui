@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const OrderForm  = () => {
+const OrderForm  = ({ addOrder }) => {
   const [state, setState] = useState({
     name: '',
     ingredients: []
@@ -9,6 +10,7 @@ const OrderForm  = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addOrder(state)
     clearInputs();
   }
 
@@ -60,6 +62,14 @@ const OrderForm  = () => {
       </button>
     </form>
   )
+}
+
+OrderForm.propTypes = {
+  addOrder: PropTypes.func,
+  state: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    ingredients: PropTypes.array.isRequired
+  })
 }
 
 export default OrderForm;

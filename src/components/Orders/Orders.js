@@ -1,5 +1,6 @@
 import React from 'react';
 import './Orders.css';
+import PropTypes from 'prop-types';
 
 const Orders = ({ orders }) => {
     const orderEls = orders.map(order => {
@@ -20,6 +21,10 @@ const Orders = ({ orders }) => {
       { orderEls.length ? orderEls : <p>No orders yet!</p> }
     </section>
   )
+}
+
+Orders.propTypes = {
+  orders: PropTypes.array.isRequired
 }
 
 export default Orders;

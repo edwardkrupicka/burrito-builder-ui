@@ -12,19 +12,43 @@ const App = () => {
   console.log(error)
 
   useEffect(() => {
-    const callOrder = async () => {
-      const gotOrder = await getOrders('http://localhost:3001/api/v1/orders')
-      console.log(gotOrder.orders)
-      setOrders(gotOrder.orders)
-    } 
     callOrder()
   }, [])
+
+  const callOrder = async () => {
+    const gotOrder = await getOrders('http://localhost:3001/api/v1/orders')
+    console.log(gotOrder.orders)
+    setOrders(gotOrder.orders)
+  } 
+
+  const addOrder = async (order) => {
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order)
+    };
+    try {
+    const fetchResponse = await fetch('http://localhost:3001/api/v1/orders', config)
+    const json = await fetchResponse.json()
+    console.log(json)
+    if(!json){
+      throw(json)
+    }
+    callOrder()
+    } catch (err) {
+      console.log(err)
+      setError(error => [...error, err.error])
+    }
+  }
 
     return (
       <main className="App">
         <header>
           <h1>Burrito Builder</h1>
-          <OrderForm />
+          <OrderForm addOrder={addOrder}/>
         </header>
         {error ? <h1>Oops</h1> : 
           <Orders orders={orders}/>
